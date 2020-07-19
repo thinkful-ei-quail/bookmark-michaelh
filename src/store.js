@@ -1,38 +1,49 @@
-const store = {
-    bookmarks: [],
-    adding: true,
-    error: null,
-    filter: 0, 
+'use strict';
 
-    addNewBookMark(bookmark) {
-        return this.bookmarks.push(bookmark)
-    }, 
-    findAndDeleteBookMark(id){
-        return this.bookmarks.filter(currentBookmark => 
-            currentBookmark.id !== id )
-    }, 
-    findByID(id){
-        return this.bookmarks.find(currentBookmark =>
-            currentBookmark.id === id)
-    },
-    setError(newError){
-        let error = newError; 
-        return error 
-    }, 
+const bookmarks=[];
+let adding = false;
+let error = null;
+let filter = 0;
 
-    findAndUpdate(id, newData){
-        let bookmark = this.findByID(id);
-        Object.assign(bookmark, newData)
-    }, 
+const findById = function (id){
+    return this.bookmarks.find(currentBookmark => currentBookmark.id === id);
+};
 
-    closeAllBookMarks(){
-        this.bookmarks.map(bookmark =>
-        bookmark.expanded = false
-        )
-    }, 
+const addMark = function (bookmark){
+    this.bookmarks.push(bookmark);
+};
+
+const filterMarks = function (list) {
+    return list.filter((filter)=> bookmark.rating >= this.filter);
+};
+
+const expand = function (bookmark) {
+    bookmark.expanded = !bookmark.expanded;
+};
+
+const findAndDeleteMark = function (id) {
+    this.bookmarks = this.bookmarks.filter(currentBookmark => currentBookmark.id !== id);
+};
+
+const errorSet = function (error) {
+    this.error = error;
+};
+
+const findAndAddNewinfo = function (id, newInfo) {
+    const currentBookmark = this.findById(id);
+    Object.assign(currentBookmark, newInfo)
 }
 
-
-export{
-    store
+export default {
+    findAndAddNewinfo,
+    errorSet,
+    findAndDeleteMark,
+    expand,
+    filterMarks,
+    addMark,
+    findById,
+    adding,
+    error,
+    filter,
+    bookmarks
 }
