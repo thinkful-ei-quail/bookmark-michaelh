@@ -1,0 +1,27 @@
+main {
+	display: flex;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+form {
+	display: flex;
+	color: skyblue;
+}
+h1 {
+	color: skyblue;
+}
+body {
+	background-image: url(/src/gettyimages-981505478-612x612.jpg);
+	background-size: cover;
+	color: skyblue;
+}
+
+.cancel {
+	margin-top: 200px;
+}

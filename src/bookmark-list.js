@@ -142,9 +142,9 @@ const render = function () {
 const renderError = function () {
 	if (store.error) {
 		const errorMsg = generateError(store.error)
-		$(".error").html(errorMsg)
+		$(".error-container").html(errorMsg)
 	} else {
-		$(".error").empty()
+		$(".error-container").empty()
 	}
 }
 
@@ -201,18 +201,13 @@ const handleNewBookmarkCreate = function () {
 const handleFilterBy = function () {
 	$("main").on("submit", ".js-filter-by", (event) => {
 		event.preventDefault()
-		// console.log('`handleFilterBy` ran');
-		// console.log($('#min-rating').val());
 		store.filter = $("#min-rating").val()
-		// console.log(store.filter);
 		render()
 	})
 }
 
 const handleExpand = function () {
 	$("main").on("click", `.js-bookmark-title`, (event) => {
-		// console.log(`handleExpand ran`);
-		// console.log(`event target: ${event.target.className}`);
 		const id = getBookmarkIdFromElement(event.currentTarget)
 		const bookmark = store.findById(id)
 
@@ -241,7 +236,7 @@ const handleDeleteBookmarkClicked = function () {
 		const id = getBookmarkIdFromElement(event.currentTarget)
 		api.bookMarkErase(id)
 			.then(() => {
-				store.findAndDelete(id)
+				store.findAndDeleteMark(id)
 				render()
 			})
 			.catch((error) => {
@@ -255,7 +250,7 @@ const handleDeleteBookmarkClicked = function () {
 const handleCloseError = function () {
 	$(".error-container").on("click", "#cancel-error", (event) => {
 		//console.log('lets close this error');
-		store.setError(null)
+		store.errorSet(null)
 		renderError()
 	})
 }
