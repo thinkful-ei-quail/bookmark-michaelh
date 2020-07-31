@@ -7,21 +7,28 @@ main {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin: 10px;
 }
 
 form {
 	display: flex;
-	color: skyblue;
+	color: royalblue;
+	margin: 10px;
 }
 h1 {
-	color: skyblue;
+	color: grey;
 }
 body {
 	background-image: url(/src/gettyimages-981505478-612x612.jpg);
 	background-size: cover;
-	color: skyblue;
+	color: royalblue;
 }
 
-.cancel {
-	margin-top: 200px;
+div {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+.new-bookmark {
+	size: 20px;
 }
