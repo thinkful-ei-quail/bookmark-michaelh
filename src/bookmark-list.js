@@ -1,8 +1,8 @@
-"use strict"
+"use strict";
 
-import $ from "jQuery"
-import api from "./api"
-import store from "./store"
+import $ from "jQuery";
+import api from "./api";
+import store from "./store";
 
 const generateInitialView = function (bookmarkString) {
 	return `
@@ -27,8 +27,8 @@ const generateInitialView = function (bookmarkString) {
       <ul class="bookmark-list js-bookmark-list">
         ${bookmarkString}
       </ul>
-    </div>`
-}
+    </div>`;
+};
 
 const generateAddBookmarkView = function () {
 	return `
@@ -55,8 +55,8 @@ const generateAddBookmarkView = function () {
           <span class="button-label">Cancel</span>
       </button>
     </div>
-  `
-}
+  `;
+};
 
 const generateBookmarkElement = function (bookmark) {
 	if (bookmark.expanded) {
@@ -92,7 +92,7 @@ const generateBookmarkElement = function (bookmark) {
           <div class="description js-description">
                 <p>${bookmark.desc}</p>
           </div>
-        </li>`
+        </li>`;
 	} else {
 		return `
             <li class="bookmark-element js-bookmark-element" data-bookmark-id="${bookmark.id}">
@@ -105,18 +105,18 @@ const generateBookmarkElement = function (bookmark) {
                 </div>
               </div>
             </li>
-        `
+        `;
 	}
-}
+};
 
 const generateBookmarkString = function (bookmarkList) {
-	const filteredBookmarks = store.filterMarks(bookmarkList)
+	const filteredBookmarks = store.filterMarks(bookmarkList);
 
 	const bookmarks = filteredBookmarks.map((bookmark) =>
 		generateBookmarkElement(bookmark)
-	)
-	return bookmarks.join("")
-}
+	);
+	return bookmarks.join("");
+};
 
 const generateError = function (message) {
 	return `
@@ -124,176 +124,176 @@ const generateError = function (message) {
       <button id="cancel-error">close</button>
       <h3>${message}</h3>
     </section>
-  `
-}
+  `;
+};
 
 const render = function () {
-	let bookmarks = [...store.bookmarks]
+	let bookmarks = [...store.bookmarks];
 	if (!store.adding) {
-		const bookmarksListString = generateBookmarkString(bookmarks)
-		const initialView = generateInitialView(bookmarksListString)
-		$("main").html(initialView)
+		const bookmarksListString = generateBookmarkString(bookmarks);
+		const initialView = generateInitialView(bookmarksListString);
+		$("main").html(initialView);
 	} else if (store.adding) {
-		const addBookmarkView = generateAddBookmarkView()
-		$("main").html(addBookmarkView)
+		const addBookmarkView = generateAddBookmarkView();
+		$("main").html(addBookmarkView);
 	}
-}
+};
 
 const renderError = function () {
 	if (store.error) {
-		const errorMsg = generateError(store.error)
-		$(".error-container").html(errorMsg)
+		const errorMsg = generateError(store.error);
+		$(".error-container").html(errorMsg);
 	} else {
-		$(".error-container").empty()
+		$(".error-container").empty();
 	}
-}
+};
 
 const handleNewBookmark = function () {
 	$("main").on("click", ".js-new-bookmark", (event) => {
-		store.adding = true
-		render()
-	})
-}
+		store.adding = true;
+		render();
+	});
+};
 
 const handleCancel = function () {
 	$("main").on("click", ".js-cancel", (event) => {
 		// console.log('`handleCancel` ran');
-		store.adding = false
+		store.adding = false;
 		// console.log(store.adding);
-		store.errorSet(null)
-		renderError()
-		render()
-	})
-}
+		store.errorSet(null);
+		renderError();
+		render();
+	});
+};
 
 const handleNewBookmarkCreate = function () {
 	$("main").on("click", ".js-create", (event) => {
-		event.preventDefault()
+		event.preventDefault();
 		// console.log('`handleNewBookmarkCreate` ran');
-		const newUrl = $("#bookmark-url").val()
-		const newTitle = $("#bookmark-title").val()
-		const newRating = $("#bookmark-rating").val()
-		const newDesc = $("#bookmark-desc").val()
+		const newUrl = $("#bookmark-url").val();
+		const newTitle = $("#bookmark-title").val();
+		const newRating = $("#bookmark-rating").val();
+		const newDesc = $("#bookmark-desc").val();
 		const newBookmarkData = {
 			url: newUrl,
 			title: newTitle,
 			rating: newRating,
 			desc: newDesc,
-		}
+		};
 		api.createBookMark(newBookmarkData)
 			.then((newBookmark) => {
-				store.addMark(newBookmark)
-				store.adding = false
-				store.errorSet(null)
+				store.addMark(newBookmark);
+				store.adding = false;
+				store.errorSet(null);
 				// console.log(store.error);
-				renderError()
-				render()
+				renderError();
+				render();
 			})
 			.catch((error) => {
 				// console.log(`handleNewBookmarkCreate error: ${error.message}`);
-				store.errorSet(error.message)
+				store.errorSet(error.message);
 				// console.log(error.message);
-				renderError()
-			})
-	})
-}
+				renderError();
+			});
+	});
+};
 
 const handleFilterBy = function () {
 	$("main").on("submit", ".js-filter-by", (event) => {
-		event.preventDefault()
-		store.filter = $("#min-rating").val()
-		render()
-	})
-}
+		event.preventDefault();
+		store.filter = $("#min-rating").val();
+		render();
+	});
+};
 
 const handleExpand = function () {
 	$("main").on("click", `.js-bookmark-title`, (event) => {
-		const id = getBookmarkIdFromElement(event.currentTarget)
-		const bookmark = store.findById(id)
+		const id = getBookmarkIdFromElement(event.currentTarget);
+		const bookmark = store.findById(id);
 
 		if (!bookmark.expanded) {
-			store.expand(bookmark)
-			render()
+			store.expand(bookmark);
+			render();
 		} else if (
 			bookmark.expanded &&
 			event.target.className !== "button-label"
 		) {
-			store.expand(bookmark)
-			render()
+			store.expand(bookmark);
+			render();
 		} else {
-			return true
+			return true;
 		}
-	})
-}
+	});
+};
 
 const getBookmarkIdFromElement = function (bookmark) {
-	return $(bookmark).closest(".js-bookmark-element").data("bookmark-id")
-}
+	return $(bookmark).closest(".js-bookmark-element").data("bookmark-id");
+};
 
 const handleDeleteBookmarkClicked = function () {
 	$("main").on("click", ".js-bookmark-delete", (event) => {
 		// console.log('`handleDeleteBookmarkClicked` ran');
-		const id = getBookmarkIdFromElement(event.currentTarget)
+		const id = getBookmarkIdFromElement(event.currentTarget);
 		api.bookMarkErase(id)
 			.then(() => {
-				store.findAndDeleteMark(id)
-				render()
+				store.findAndDeleteMark(id);
+				render();
 			})
 			.catch((error) => {
 				// console.log(`handleDeleteBookmarkClicked error: ${error.message}`);
-				store.errorSet(error.message)
-				renderError()
-			})
-	})
-}
+				store.errorSet(error.message);
+				renderError();
+			});
+	});
+};
 
 const handleCloseError = function () {
 	$(".error-container").on("click", "#cancel-error", (event) => {
 		//console.log('lets close this error');
-		store.errorSet(null)
-		renderError()
-	})
-}
+		store.errorSet(null);
+		renderError();
+	});
+};
 
 const handleEditBookmark = function () {
 	$("main").on("click", ".js-bookmark-edit", (event) => {
-		let desc = $(".js-description").children().get(0)
-		const id = getBookmarkIdFromElement(event.currentTarget)
+		let desc = $(".js-description").children().get(0);
+		const id = getBookmarkIdFromElement(event.currentTarget);
 
 		if (desc.isContentEditable) {
-			console.log(desc.textContent)
-			let newDesc = desc.textContent
-			desc.contentEditable = false
-			$(event.target).html("Edit Description")
+			console.log(desc.textContent);
+			let newDesc = desc.textContent;
+			desc.contentEditable = false;
+			$(event.target).html("Edit Description");
 			api.bookmarkAddNewInfo(id, { desc: newDesc })
 				.then(() => {
-					store.findAndAddNewinfo(id, { desc: newDesc })
-					render()
+					store.findAndAddNewinfo(id, { desc: newDesc });
+					render();
 				})
 				.catch((error) => {
-					store.errorSet(error.message)
-					renderError()
-				})
+					store.errorSet(error.message);
+					renderError();
+				});
 		} else {
-			desc.contentEditable = true
-			desc.focus()
-			$(event.target).html("Save Edit")
+			desc.contentEditable = true;
+			desc.focus();
+			$(event.target).html("Save Edit");
 		}
-	})
-}
+	});
+};
 
 const bindEventListeners = function () {
-	handleNewBookmark()
-	handleCancel()
-	handleNewBookmarkCreate()
-	handleFilterBy()
-	handleExpand()
-	handleDeleteBookmarkClicked()
-	handleCloseError()
-	handleEditBookmark()
-}
+	handleNewBookmark();
+	handleCancel();
+	handleNewBookmarkCreate();
+	handleFilterBy();
+	handleExpand();
+	handleDeleteBookmarkClicked();
+	handleCloseError();
+	handleEditBookmark();
+};
 
 export default {
 	render,
 	bindEventListeners,
-}
+};
