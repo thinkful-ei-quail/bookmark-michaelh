@@ -6,7 +6,7 @@
 
 -the titles are links
 
--the entire page is usable with only a keyboard(arrow keys, tab, and enter), YOU MUST HIT ENTER AND NAVIGATE WITH ARROW KEYS I HAVE GOTTEN FAILED LIKE THREE TIMES FOR THIS AND IT WAS IMPLEMENTED SO LONG AGO to select a minimum rating to filter, and also to submit a rating for a new bookmark
+-the entire page is usable with only a keyboard(arrow keys, tab, and enter), to select a minimum rating to filter, and also to submit a rating for a new bookmark
 
 -Expand individual bookmarks to view the description, and the delete bookmark option
 
@@ -16,6 +16,7 @@
 
             Available at:
 
+https://thinkful-ei-quail.github.io/bookmark-michaelh/
 USER STORIES COMPLETED BELOW:
 
 User Stories Bookmarks contain:
